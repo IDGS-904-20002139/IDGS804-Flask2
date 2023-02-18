@@ -1,0 +1,34 @@
+{%extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+    {% from "_macros.html" import render_firld, render_input %}
+        <form action="/CajasDi" method="POST">
+            {{form.csrf_token}}
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+            {{render_firld(form.ncontent)}}
+            <input type="submit" name="btn" value="Cargar">
+        </form>
+        {% if form.ncontent.data %}
+        <form action="/CajasDi" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                {% for i in range(0, form.ncontent.data) %}
+                {{ render_input(name="numeros") }}
+                {% endfor %}
+                <input type="submit" name="btn" value="Datos">
+        </form>
+        {% endif %}
+</div>
+
+<div class="col-xs-4">
+    <h5>Mayor numero: {{ max_value}}</h5>
+    <h5>Menor numero: {{min_value}}</h5>
+    <h5>Promedio: {{prom}}</h5>
+    <h5>Repetidos</h5>
+    <ul>
+        {{repetidos|safe}}
+    </ul>
+</div>
+
+{% endblock %}
