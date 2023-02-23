@@ -1,0 +1,31 @@
+{%extends "layout.html" %}
+
+{% block content %}
+
+<div class="col-xs-6">
+    {% from "_macros.html" import render_firld%}
+    <form action="" method="post" novalidate>
+        <div class="row control-group">
+            <div class="form-group">
+                {{render_firld(form.espaniol)}}
+                {{render_firld(form.ingles)}}
+            </div>
+            <input type="submit" name="btn" value="Guardar">
+    </form>
+    <form action="" method="post" novalidate>
+        <div class="control-goup">
+            <label for="rbPalabra"></label>
+            <div>
+                <label for="rbPalEs" class="label">Epañol:</label>
+                <input type="radio" name="rbPalabra" value="1" />
+                <br/>
+                <label for="rbPalIn" class="label">Ingles:</label>
+                <input type="radio" name="rbPalabra" value="2" />
+            </div>
+                {{render_firld(form.palabra)}}
+                <input type="submit" name="btn" value="Traducir">
+        </div>
+    </form>
+</div>
+
+{% endblock %}

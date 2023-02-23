@@ -9,18 +9,15 @@
     <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
         <div class="row control-group">
             <div class="form-group">
-                {{render_firld(form.matricula)}}
-                {{render_firld(form.nombre)}}
-                {{render_firld(form.apaterno)}}
-                {{render_firld(form.email)}}
+                {{render_firld(form.username)}}
+                {{render_firld(form.password)}}
             </div>
+        </div>
         <input type="submit" id="al" name="al" value="Registrar">
     </form>
 </div>
 <div class="col-md-4">
-    <h1>Matricula:{{datos[0]}}</h1></div>
-    <h1>Nombre:{{datos[1]}}</h1>
-    <h1></h1>
+    
 </div>
 
 {% endblock %}
