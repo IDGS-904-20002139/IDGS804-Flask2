@@ -1,5 +1,5 @@
 # Esto sireve para leer los datos de un archivo de texto
-# f=open('alumnos.txt','r')
+f=open('alumnos.txt','r')
 
 
 # alumnos=f.read()
@@ -8,15 +8,16 @@
 # alumnos2=f.read()
 # print(alumnos2)
 
-# alumnos=f.readlines()
+alumnos=f.readlines()
 # print(alumnos)
-#  print(alumnos[0])
+print(alumnos[0])
+print(alumnos[1])
 # for item in alumnos:
 #     print(item,end='')
 
 # alumnos=f.readline()
 # print(alumnos)
-# f.close()
+f.close()
 
 
 
@@ -28,7 +29,7 @@
 # f.close()
 
 # Esto sireve para escribir dato en un archivo de texto
-f=open('alumnos2.txt','a')
-f.write('\n'+'Hola Mundo!!!!')
-f.write('\n'+'Nuevo Hola Mundo!!!!')
-f.close()
+# f=open('alumnos2.txt','a')
+# f.write('\n'+'Hola Mundo!!!!')
+# f.write('\n'+'Nuevo Hola Mundo!!!!')
+# f.close()

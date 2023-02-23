@@ -69,19 +69,36 @@ def traductor():
     if request.method=='POST':
         paEsp = reg_traductor.espaniol.data
         paIng = reg_traductor.ingles.data
+        palabra=reg_traductor.palabra
+
         btn = request.form.get("btn")
-        rbPalEs = request.form.get("rbPalEs")
-        rbPalIn = request.form.get("rbPalIn")
+        rbPalabra = request.form.get("rbPalabra")
+        
         if btn == 'Guardar':
             f=open('traductor.txt','w')
-            f.write(paEsp)
-            f.write('\n'+paIng)
+            paEsp=f.write(paEsp.lower())
+            paIng=f.write('\n'+paIng.lower())
             f.close()
-            return render_template('traductor.html',form=reg_traductor)
+            return render_template('traductor.html',form=reg_traductor,paEsp=paEsp, paIng=paIng)
+            
         if btn == 'Traducir':
-            if rbPalEs == '1':
-                traductor = f.read()
-            return render_template('traductor.html',form=reg_traductor, traductor=traductor)
+            if rbPalabra == '1':
+                f=open('traductor.txt','r')
+                palabra=f.readlines()
+                palabra1 = ('La palabra en ingles es: '+palabra[1])
+                palabra2 = ('La palabra traducida al español es: '+palabra[0])
+                f.close()
+                return render_template('traductor.html',form=reg_traductor, palabra1=palabra1, palabra2=palabra2)
+            elif rbPalabra == '2':
+                f=open('traductor.txt','r')
+                palabra=f.readlines()
+                palabra1 = ('La palabra en español es: '+palabra[0])
+                palabra2 = ('La palabra traducida en ingles es: '+palabra[1])
+                f.close()
+                return render_template('traductor.html',form=reg_traductor, palabra1=palabra1, palabra2=palabra2)
+            else:
+                print('No ahi una selección')
+            return render_template('traductor.html',form=reg_traductor, palabra=palabra)
     return render_template("traductor.html", form=reg_traductor, datos=datos)
 
 @app.route("/cookie", methods=['GET','POST'])
@@ -93,11 +110,11 @@ def cookie():
         user=reg_user.username.data
         password=reg_user.password.data
         datos=user+'@'+password
-        success_menssage='Bienvenido {}'.format(user)
+        success_message='Bienvenido {}'.format(user)
         response.set_cookie('datos_usuario',datos)
-        flash(success_menssage)
+        flash(success_message)
     return response
 
 if __name__ == "__main__":
-    csrf.init_app(app)
+    # csrf.init_app(app)
     app.run(debug=True,port=3000)
