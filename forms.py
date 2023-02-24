@@ -20,14 +20,18 @@ class UserForm(Form):
     amaterno = StringField('Amaterno')
     email = EmailField('Correo')
 
+class Palabra(Form):
+    # Palabra para el traductor
+    palabra = StringField('Ingresa la palabra a traducir',
+    [mi_validacion])
+
+
 class Traductor(Form):
-    espaniol = StringField('Español',[
-        mi_validacion])
-    ingles =StringField('Ingles',[
-        mi_validacion])
-    palabra = StringField('Palabra en el idioma contrario al seleccionado')
-    rbPalEs = RadioField('Español')
-    rbPalIn = RadioField('Ingles')
+    espaniol = StringField('Español',
+    [validators.DataRequired('El Campo es requerido')])
+    ingles =StringField('Ingles',
+    [validators.DataRequired('El Campo es requerido')])
+    
 
 class LoginForm(Form):
     username=StringField('usuario',

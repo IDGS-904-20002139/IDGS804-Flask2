@@ -5,28 +5,31 @@
 <div class="col-xs-6">
     {% from "_macros.html" import render_firld%}
     <form action="" method="post" novalidate>
+    {{reg_traductor.csrf_token}}
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
         <div class="row control-group">
             <div class="form-group">
-                {{render_firld(form.espaniol)}}
-                {{render_firld(form.ingles)}}
+                {{render_firld(reg_traductor.espaniol)}}
+                {{render_firld(reg_traductor.ingles)}}
             </div>
             <input type="submit" name="btn" value="Guardar">
     </form>
     <form action="" method="post" novalidate>
+    {{reg_palabra.csrf_token}}
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
         <div class="control-goup">
-            <label for="txtPalabra"></label>
+            <label for="txtPalabra">Idioma a traducir</label>
             <div>
                 <label for="rbPalEs" class="label">Epañol:</label>
                 <input type="radio" name="rbPalabra" value="1" />
                 <br/>
                 <label for="rbPalIn" class="label">Ingles:</label>
                 <input type="radio" name="rbPalabra" value="2" />
+                {{render_firld(reg_palabra.palabra)}}
             </div>
                 <input type="submit" name="btn" value="Traducir">
                 <br>
-                {{palabra1}}
-                <br>
-                {{palabra2}}
+                {{result}}
         </div>
     </form>
 </div>

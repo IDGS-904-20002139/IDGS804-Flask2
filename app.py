@@ -65,41 +65,37 @@ def CajasDi():
 @app.route("/Traductor", methods=['GET','POST'])
 def traductor():
     reg_traductor=forms.Traductor(request.form)
-    datos=list()
-    if request.method=='POST':
+    reg_palabra=forms.Palabra(request.form)
+    if request.method=='POST' and reg_traductor.validate():
         paEsp = reg_traductor.espaniol.data
         paIng = reg_traductor.ingles.data
-        palabra=reg_traductor.palabra
-
         btn = request.form.get("btn")
-        rbPalabra = request.form.get("rbPalabra")
         
         if btn == 'Guardar':
             f=open('traductor.txt','w')
-            paEsp=f.write(paEsp.lower())
-            paIng=f.write('\n'+paIng.lower())
+            paEsp=f.write(paEsp.lower()+','+paIng.lower())
             f.close()
-            return render_template('traductor.html',form=reg_traductor,paEsp=paEsp, paIng=paIng)
-            
+            return render_template('traductor.html',reg_traductor=reg_traductor, reg_palabra=reg_palabra,paEsp=paEsp, paIng=paIng)
+    
+    if request.method=='POST' and reg_palabra.validate():  
+        btn = request.form.get("btn")      
         if btn == 'Traducir':
-            if rbPalabra == '1':
-                f=open('traductor.txt','r')
-                palabra=f.readlines()
-                palabra1 = ('La palabra en ingles es: '+palabra[1])
-                palabra2 = ('La palabra traducida al español es: '+palabra[0])
-                f.close()
-                return render_template('traductor.html',form=reg_traductor, palabra1=palabra1, palabra2=palabra2)
-            elif rbPalabra == '2':
-                f=open('traductor.txt','r')
-                palabra=f.readlines()
-                palabra1 = ('La palabra en español es: '+palabra[0])
-                palabra2 = ('La palabra traducida en ingles es: '+palabra[1])
-                f.close()
-                return render_template('traductor.html',form=reg_traductor, palabra1=palabra1, palabra2=palabra2)
-            else:
-                print('No ahi una selección')
-            return render_template('traductor.html',form=reg_traductor, palabra=palabra)
-    return render_template("traductor.html", form=reg_traductor, datos=datos)
+            rbPalabra = request.form.get("rbPalabra")
+            palabra= reg_palabra.palabra.data.lower()
+            with open('traductor.txt', 'r') as archivo:
+                for line in archivo:
+                    esp, ing = line.strip().split(',')
+                    if rbPalabra == '1' and ing == palabra:
+                        result = esp
+                        break
+                    elif rbPalabra == '2' and esp == palabra:
+                        result = ing
+                        break
+                else:
+                    result = 'No se pudo encontrar la traducción'
+        
+            return render_template('traductor.html',reg_traductor=reg_traductor, reg_palabra=reg_palabra, palabra=palabra,result=result)
+    return render_template("traductor.html", reg_traductor=reg_traductor,reg_palabra= reg_palabra)
 
 @app.route("/cookie", methods=['GET','POST'])
 def cookie():
@@ -116,5 +112,5 @@ def cookie():
     return response
 
 if __name__ == "__main__":
-    # csrf.init_app(app)
+    csrf.init_app(app)
     app.run(debug=True,port=3000)
