@@ -6,6 +6,8 @@ import forms
 import cajasDinamicas
 from flask import make_response
 from flask import flash
+from config import colorConf
+import math
 
 
 app=Flask(__name__)
@@ -72,8 +74,8 @@ def traductor():
         btn = request.form.get("btn")
         
         if btn == 'Guardar':
-            f=open('traductor.txt','w')
-            paEsp=f.write(paEsp.lower()+','+paIng.lower())
+            f=open('traductor.txt','a')
+            paEsp=f.writelines(paEsp.lower()+','+paIng.lower()+'\n')
             f.close()
             return render_template('traductor.html',reg_traductor=reg_traductor, reg_palabra=reg_palabra,paEsp=paEsp, paIng=paIng)
     
@@ -109,6 +111,111 @@ def cookie():
         success_message='Bienvenido {}'.format(user)
         response.set_cookie('datos_usuario',datos)
         flash(success_message)
+    return response
+
+@app.route('/resist', methods=['GET', 'POST'])
+def calRes():
+    reg_resist = forms.ResistenciasForm(request.form)
+    btn = request.form.get("btn")
+    colorBanda1 =""
+    colorBanda2 =""
+    codHexMuilti = ""
+    colorTolerancia =""
+    valorResistencia =""
+    valorMax =""
+    valorMin =""
+    codHexBanda1 =""
+    codHexBanda2 =""
+    codHexTolerancia =""
+    ban1=""
+    ban2=""
+    multi=""
+    tolerancia=""
+    valores_guardados =[]
+
+    if request.method == 'POST' and reg_resist.validate():
+        if btn == 'Calcular Valor':
+            colorBanda1 = reg_resist.banda1.data
+            colorBanda2 = reg_resist.banda2.data
+            colorMultiplicador = reg_resist.multiplier.data
+            colorTolerancia = reg_resist.tolerancia.data
+        
+            codHexBanda1 = colorConf.coloresBanda[colorBanda1]
+            codHexBanda2 = colorConf.coloresBanda[colorBanda2]
+            codHexTolerancia =colorConf.toleranciaColor[colorTolerancia]
+            codHexMuilti = colorConf.multiplicador[colorMultiplicador]
+
+
+            valorResistencia = (int(colorBanda1 + colorBanda2) * 10**int(colorMultiplicador))
+            valorNominal = int(colorBanda1 + colorBanda2) * 10**int(colorMultiplicador)
+
+            if colorTolerancia == 'oro':
+                valorTolerancia = 0.05
+            elif colorTolerancia == 'plata':
+                valorTolerancia = 0.1
+            else:
+                valorTolerancia = colorConf.valorTolerancia[colorTolerancia]
+
+            valorMax = valorNominal * (1 + valorTolerancia)
+            valorMin = valorNominal * (1 - valorTolerancia)
+
+            f=open('guardarVaRes.txt','a')
+            f.writelines(colorBanda1+','+colorBanda2+','+colorMultiplicador+','+colorTolerancia+'\n')        
+            f.close()
+            
+            
+    response = make_response(render_template('resistencia.html', reg_resist=reg_resist, colorBanda1=colorBanda1, colorBanda2=colorBanda2, 
+                        miltiColor=codHexMuilti, toleranciaColor=colorTolerancia, 
+                        valorResistencia=valorResistencia, maxResistancia=valorMax, minResistancia=valorMin,
+                        nomBanda1=codHexBanda1, nomBanda2=codHexBanda2, nomTolerancia=codHexTolerancia))
+
+    response.set_cookie('valorResistencia', str(valorResistencia))
+    response.set_cookie('maxResistancia', str(valorMax))
+    response.set_cookie('minResistancia', str(valorMin))
+
+    if request.method == 'POST':
+        if btn == 'Cargar Valores':
+            with open('guardarVaRes.txt', 'r') as archivo:
+                valores_guardados =[]
+                for line in archivo:
+                    ban1, ban2, multi, tolerancia = line.strip().split(',')
+                    codHexBanda1 = colorConf.coloresBanda[ban1]
+                    codHexBanda2 = colorConf.coloresBanda[ban2]
+                    codHexMuilti = colorConf.multiplicador[multi]
+                    codHexTolerancia =colorConf.toleranciaColor[tolerancia]
+                    
+                    valorResistencia = (int(ban1 + ban2) * 10**int(multi))
+                    valorNominal = int(ban1 + ban2) * 10**int(multi)
+
+                    if tolerancia == 'oro':
+                        valorTolerancia = 0.05
+                    elif tolerancia == 'plata':
+                        valorTolerancia = 0.1
+                    else:
+                        valorTolerancia = colorConf.valorTolerancia[tolerancia]
+
+                    valorMax = valorNominal * (1 + valorTolerancia)
+                    valorMin = valorNominal * (1 - valorTolerancia)
+                    
+                    valores_guardados2 =[]
+                    valores_guardados2.append(codHexBanda1)
+                    valores_guardados2.append(codHexBanda2)
+                    valores_guardados2.append(codHexMuilti)
+                    valores_guardados2.append(codHexTolerancia)
+                    valores_guardados2.append(valorResistencia)
+                    valores_guardados2.append(valorMax)
+                    valores_guardados2.append(valorMin)
+                    valores_guardados.append(valores_guardados2)
+                print(valores_guardados)
+    response = make_response(render_template('resistencia.html', reg_resist=reg_resist, colorBanda1=ban1, 
+                        colorBanda2=ban2, miltiColor=codHexMuilti, toleranciaColor=tolerancia, 
+                        valorResistencia=valorResistencia, maxResistancia=valorMax, minResistancia=valorMin,
+                        nomBanda1=codHexBanda1, nomBanda2=codHexBanda2, nomTolerancia=codHexTolerancia, valores_guardados=valores_guardados))
+
+    response.set_cookie('valorResistencia', str(valorResistencia))
+    response.set_cookie('maxResistancia', str(valorMax))
+    response.set_cookie('minResistancia', str(valorMin)) 
+
     return response
 
 if __name__ == "__main__":

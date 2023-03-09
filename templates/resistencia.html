@@ -1,0 +1,88 @@
+{% extends "layout.html" %} {% block content %} {% from "_macros.html" import
+render_firld %}
+<div class="row">
+  <div class="col-4">
+    <form method="POST" action="/resist" novalidate style="text-align: center">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            {{render_firld(reg_resist.banda1)}} 
+            {{render_firld(reg_resist.banda2)}} 
+            {{render_firld(reg_resist.multiplier)}} 
+            {{render_firld(reg_resist.tolerancia)}}
+      <br />
+      <button type="submit" class="btn"  name="btn" value="Calcular Valor">
+        Calcular Valor
+      </button>
+      <div>
+    </div>
+    </form>
+  </div>
+</div>
+{% if valorResistencia is not none %}
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Color de la banda 1</th>
+      <th>Color de la banda 2</th>
+      <th>Color de la banda 3</th>
+      <th>Color de la banda 4</th>
+      <th>Valor</th>
+      <th>Maximo</th>
+      <th>Minimo</th>
+    </tr>
+  </thead>
+  <tbody style="align-content: center">
+    <tr>
+      <td style="background-color: {{nomBanda1}}"></td>
+      <td style="background-color: {{nomBanda2}}"></td>
+      <td style="background-color: {{miltiColor}}"></td>
+      <td style="background-color: {{nomTolerancia}}"></td>
+      <td>{{valorResistencia}}</td>
+      <td>{{maxResistancia}}</td>
+      <td>{{minResistancia}}</td>
+    </tr>
+  </tbody>
+</table>
+{% endif %}
+
+<div class="row">
+  <div class="col-4">
+    <form method="POST" action="/resist" novalidate style="text-align: center">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <button type="submit" class="btn"  name="btn" value="Cargar Valores">
+            Cargar Valores
+          </button>
+    </div>
+    </form>
+  </div>
+</div> 
+{% if valores_guardados %}
+    <h2>Valores guardados:</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Color de la banda 1</th>
+          <th>Color de la banda 2</th>
+          <th>Color de la banda 3</th>
+          <th>Color de la banda 4</th>
+          <th>Valor</th>
+          <th>Maximo</th>
+          <th>Minimo</th>
+        </tr>
+      </thead>
+        {% for guardarVaRes in valores_guardados %}
+        <tbody style="align-content: center">
+          <tr>
+            <td style="background-color: {{guardarVaRes[0]}}"></td>
+            <td style="background-color: {{guardarVaRes[1]}}"></td>
+            <td style="background-color: {{guardarVaRes[2]}}"></td>
+            <td style="background-color: {{guardarVaRes[3]}}"></td>
+            <td>{{guardarVaRes[4]}}</td>
+            <td>{{guardarVaRes[5]}}</td>
+            <td>{{guardarVaRes[6]}}</td>
+          </tr>
+        </tbody>
+        {% endfor %}
+        </table>
+{% endif %}
+
+{% endblock %}

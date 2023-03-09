@@ -1,1 +1,5 @@
+rojo,red
 hola,hello
+oso,bear
+dulce,candy
+pelota,ball
