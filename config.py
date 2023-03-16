@@ -1,20 +1,20 @@
 class colorConf:
     coloresBanda = {
-        '0': '#000000',
-        '1': '#964b00',
-        '2': '#ff0000',
-        '3': '#ff6a00',
-        '4': '#ffd900',
-        '5': '#4dff00',
-        '6': '#00c8ff',
-        '7': '#4C2882',
-        '8': '#bcbcbc',
-        '9': '#ffffff'
+        '0': 'black',
+        '1': 'brown',
+        '2': 'red',
+        '3': 'oranje',
+        '4': 'yellow',
+        '5': 'green',
+        '6': 'blue',
+        '7': 'purple',
+        '8': 'gray',
+        '9': 'white'
     }
 
     toleranciaColor = {        
-        'oro': '#ffbf00',
-        'plata': '#e3e4e5'
+        'oro': 'gold',
+        'plata': 'silver'
     }
 
     valorTolerancia = {
@@ -23,14 +23,45 @@ class colorConf:
     }
 
     multiplicador ={
-        '0': '#000000',
-        '1': '#964b00',
-        '2': '#ff0000',
-        '3': '#ff6a00',
-        '4': '#ffd900',
-        '5': '#4dff00',
-        '6': '#00c8ff',
-        '7': '#4C2882',
-        '8': '#bcbcbc',
-        '9': '#ffffff'
+        '0': 'black',
+        '1': 'brown',
+        '2': 'red',
+        '3': 'oranje',
+        '4': 'yellow',
+        '5': 'green',
+        '6': 'blue',
+        '7': 'purple',
+        '8': 'gray',
+        '9': 'white'
+    }
+
+    posMult = {
+        'black': '0',
+        'brown': '1',
+        'red': '2',
+        'oranje': '3',
+        'yellow': '4',
+        'green': '5',
+        'blue': '6',
+        'purple': '7',
+        'gray': '8',
+        'white': '9'
+    }
+
+    posBanda = {
+        'black': 0,
+        'brown': 1,
+        'red': 2,
+        'orange': 3,
+        'yellow': 4,
+        'green': 5,
+        'blue': 6,
+        'purple': 7,
+        'gray': 8,
+        'white': 9
+    }
+
+    toleranciapos = {        
+        'gold': 'oro',
+        'silver': 'plata'
     }

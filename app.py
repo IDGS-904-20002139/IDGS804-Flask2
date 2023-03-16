@@ -160,7 +160,7 @@ def calRes():
             valorMin = valorNominal * (1 - valorTolerancia)
 
             f=open('guardarVaRes.txt','a')
-            f.writelines(colorBanda1+','+colorBanda2+','+colorMultiplicador+','+colorTolerancia+'\n')        
+            f.writelines(codHexBanda1+','+codHexBanda2+','+codHexMuilti+','+codHexTolerancia+'\n')        
             f.close()
             
             
@@ -179,29 +179,29 @@ def calRes():
                 valores_guardados =[]
                 for line in archivo:
                     ban1, ban2, multi, tolerancia = line.strip().split(',')
-                    codHexBanda1 = colorConf.coloresBanda[ban1]
-                    codHexBanda2 = colorConf.coloresBanda[ban2]
-                    codHexMuilti = colorConf.multiplicador[multi]
-                    codHexTolerancia =colorConf.toleranciaColor[tolerancia]
+                    codHexBanda1 = colorConf.posBanda[ban1]
+                    codHexBanda2 = colorConf.posBanda[ban2]
+                    codHexMuilti = colorConf.posMult[multi]
+                    codHexTolerancia =colorConf.toleranciapos[tolerancia]
                     
-                    valorResistencia = (int(ban1 + ban2) * 10**int(multi))
-                    valorNominal = int(ban1 + ban2) * 10**int(multi)
+                    valorResistencia = (int(codHexBanda1 + codHexBanda2) * 10**int(codHexMuilti))
+                    valorNominal = int(codHexBanda1 + codHexBanda2) * 10**int(codHexMuilti)
 
                     if tolerancia == 'oro':
                         valorTolerancia = 0.05
                     elif tolerancia == 'plata':
                         valorTolerancia = 0.1
                     else:
-                        valorTolerancia = colorConf.valorTolerancia[tolerancia]
+                        valorTolerancia = colorConf.valorTolerancia[codHexTolerancia]
 
                     valorMax = valorNominal * (1 + valorTolerancia)
                     valorMin = valorNominal * (1 - valorTolerancia)
                     
                     valores_guardados2 =[]
-                    valores_guardados2.append(codHexBanda1)
-                    valores_guardados2.append(codHexBanda2)
-                    valores_guardados2.append(codHexMuilti)
-                    valores_guardados2.append(codHexTolerancia)
+                    valores_guardados2.append(ban1)
+                    valores_guardados2.append(ban2)
+                    valores_guardados2.append(multi)
+                    valores_guardados2.append(tolerancia)
                     valores_guardados2.append(valorResistencia)
                     valores_guardados2.append(valorMax)
                     valores_guardados2.append(valorMin)
